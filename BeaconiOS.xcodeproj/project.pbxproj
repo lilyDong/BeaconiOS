@@ -14,6 +14,7 @@
 		FE0769E6211C2850004ABC5A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FE0769E4211C2850004ABC5A /* LaunchScreen.storyboard */; };
 		FE0769E9211C2850004ABC5A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0769E8211C2850004ABC5A /* main.m */; };
 		FE0769F1211C3DF9004ABC5A /* PeripheralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0769EF211C3DF9004ABC5A /* PeripheralViewController.m */; };
+		FE0769F421215C7D004ABC5A /* CentralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0769F321215C7D004ABC5A /* CentralViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		FE0769E8211C2850004ABC5A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FE0769EF211C3DF9004ABC5A /* PeripheralViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeripheralViewController.m; sourceTree = "<group>"; };
 		FE0769F0211C3DF9004ABC5A /* PeripheralViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeripheralViewController.h; sourceTree = "<group>"; };
+		FE0769F221215C7D004ABC5A /* CentralViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CentralViewController.h; sourceTree = "<group>"; };
+		FE0769F321215C7D004ABC5A /* CentralViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CentralViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,8 @@
 				FE0769DD211C284F004ABC5A /* ViewController.m */,
 				FE0769F0211C3DF9004ABC5A /* PeripheralViewController.h */,
 				FE0769EF211C3DF9004ABC5A /* PeripheralViewController.m */,
+				FE0769F221215C7D004ABC5A /* CentralViewController.h */,
+				FE0769F321215C7D004ABC5A /* CentralViewController.m */,
 				FE0769DF211C284F004ABC5A /* Main.storyboard */,
 				FE0769E2211C2850004ABC5A /* Assets.xcassets */,
 				FE0769E4211C2850004ABC5A /* LaunchScreen.storyboard */,
@@ -150,6 +155,7 @@
 				FE0769DE211C284F004ABC5A /* ViewController.m in Sources */,
 				FE0769E9211C2850004ABC5A /* main.m in Sources */,
 				FE0769DB211C284F004ABC5A /* AppDelegate.m in Sources */,
+				FE0769F421215C7D004ABC5A /* CentralViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

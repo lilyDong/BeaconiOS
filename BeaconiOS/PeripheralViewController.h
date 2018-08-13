@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PeripheralViewController : NSViewController
+@interface PeripheralViewController : UIViewController
 
 @end

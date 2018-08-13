@@ -10,14 +10,10 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 
 static NSString *const ServiceUUID1 =  @"FFF0";
-//static NSString *const notiyCharacteristicUUID =  @"FFF1";
 static NSString *const notiyCharacteristicUUID =  @"FFF1";
-
-static NSString *const readwriteCharacteristicUUID =  @"FFF2";
 static NSString *const ServiceUUID2 =  @"FFE0";
-static NSString *const readCharacteristicUUID =  @"FFE1";
-static NSString * const LocalNameKey =  @"dlytest";
-
+static NSString *const readwriteCharacteristicUUID =  @"FFE1";
+static NSString * const LocalNameKey =  @"BleTest";
 
 @interface PeripheralViewController() <CBPeripheralManagerDelegate>
 
@@ -38,60 +34,32 @@ static NSString * const LocalNameKey =  @"dlytest";
 
 }
 
-
 - (void)viewDidDisappear:(BOOL)animated{
     [self.peripheralManager stopAdvertising];
-
 }
 
 //配置bluetooch的
 -(void)setUp{
-    //characteristics字段描述
-    CBUUID *CBUUIDCharacteristicUserDescriptionStringUUID = [CBUUID UUIDWithString:CBUUIDCharacteristicUserDescriptionString];
-    
     /*
      可以通知的Characteristic
      properties：CBCharacteristicPropertyNotify
      permissions CBAttributePermissionsReadable
      */
     CBMutableCharacteristic *notiyCharacteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:notiyCharacteristicUUID] properties:CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsReadable];
-    
-    /*
-     可读写的characteristics
-     properties：CBCharacteristicPropertyWrite | CBCharacteristicPropertyRead
-     permissions CBAttributePermissionsReadable | CBAttributePermissionsWriteable
-     */
-    CBMutableCharacteristic *readwriteCharacteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:readwriteCharacteristicUUID] properties:CBCharacteristicPropertyWrite | CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable | CBAttributePermissionsWriteable];
-    //设置description
-    CBMutableDescriptor *readwriteCharacteristicDescription1 = [[CBMutableDescriptor alloc]initWithType: CBUUIDCharacteristicUserDescriptionStringUUID value:@"name"];
-    [readwriteCharacteristic setDescriptors:@[readwriteCharacteristicDescription1]];
-    
-    
-    /*
-     只读的Characteristic
-     properties：CBCharacteristicPropertyRead
-     permissions CBAttributePermissionsReadable
-     */
-    CBMutableCharacteristic *readCharacteristic = [[CBMutableCharacteristic alloc]initWithType:[CBUUID UUIDWithString:readCharacteristicUUID] properties:CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable];
-    
-    
-    //service1初始化并加入两个characteristics
+    //service1初始化并加入characteristics
     CBMutableService *service1 = [[CBMutableService alloc]initWithType:[CBUUID UUIDWithString:ServiceUUID1] primary:YES];
     NSLog(@"%@",service1.UUID);
     
-    [service1 setCharacteristics:@[notiyCharacteristic,readwriteCharacteristic]];
-    
-    //service2初始化并加入一个characteristics
+    [service1 setCharacteristics:@[notiyCharacteristic]];
+
+    CBMutableCharacteristic *readWriteCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:readwriteCharacteristicUUID] properties:CBCharacteristicPropertyWrite|CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable|CBAttributePermissionsWriteable];
     CBMutableService *service2 = [[CBMutableService alloc]initWithType:[CBUUID UUIDWithString:ServiceUUID2] primary:YES];
-    [service2 setCharacteristics:@[readCharacteristic]];
+    [service2 setCharacteristics:@[readWriteCharacteristic]];
     
     //添加后就会调用代理的- (void)peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(NSError *)error
     [self.peripheralManager addService:service1];
     [self.peripheralManager addService:service2];
 }
-
-
-
 
 #pragma  mark -- CBPeripheralManagerDelegate
 
@@ -119,19 +87,19 @@ static NSString * const LocalNameKey =  @"dlytest";
     if (error == nil) {
         serviceNum++;
     }
-    
-    //因为我们添加了2个服务，所以想两次都添加完成后才去发送广播
-    if (serviceNum==2) {
-        //添加服务后可以在此向外界发出通告 调用完这个方法后会调用代理的
-        //(void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error
-        [self.peripheralManager startAdvertising:@{
-                                                   CBAdvertisementDataServiceUUIDsKey : @[[CBUUID UUIDWithString:ServiceUUID1],[CBUUID UUIDWithString:ServiceUUID2]],
-                                                   CBAdvertisementDataLocalNameKey : LocalNameKey
-                                                   }
-         ];
-        
+    if ([service.UUID.UUIDString isEqualToString:ServiceUUID1]) {
+    [self.peripheralManager startAdvertising:@{
+                                               CBAdvertisementDataServiceUUIDsKey : @[[CBUUID UUIDWithString:ServiceUUID1]],
+                                               CBAdvertisementDataLocalNameKey : LocalNameKey
+                                               }];
     }
     
+    if ([service.UUID.UUIDString isEqualToString:ServiceUUID2]) {
+        [self.peripheralManager startAdvertising:@{
+                                                   CBAdvertisementDataServiceUUIDsKey : @[[CBUUID UUIDWithString:ServiceUUID2]],
+                                                   CBAdvertisementDataLocalNameKey : LocalNameKey
+                                                   }];
+    }
 }
 
 //peripheral开始发送advertising
@@ -165,10 +133,9 @@ static NSString * const LocalNameKey =  @"dlytest";
     
 }
 
-
 //读characteristics请求
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request{
-    NSLog(@"didReceiveReadRequest");
+    NSLog(@"didReceiveReadRequest:%@",request);
     //判断是否有读数据的权限
     if (request.characteristic.properties & CBCharacteristicPropertyRead) {
         NSData *data = request.characteristic.value;
@@ -180,10 +147,9 @@ static NSString * const LocalNameKey =  @"dlytest";
     }
 }
 
-
 //写characteristics请求
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests{
-    NSLog(@"didReceiveWriteRequests");
+    NSLog(@"didReceiveWriteRequests:%@",requests);
     CBATTRequest *request = requests[0];
     
     //判断是否有写数据的权限
@@ -191,12 +157,12 @@ static NSString * const LocalNameKey =  @"dlytest";
         //需要转换成CBMutableCharacteristic对象才能进行写值
         CBMutableCharacteristic *c =(CBMutableCharacteristic *)request.characteristic;
         c.value = request.value;
+        NSString *value = [[NSString alloc] initWithData:request.value encoding:kCFStringEncodingUTF8];
+        NSLog(@"写入数据:%@",value);
         [self.peripheralManager respondToRequest:request withResult:CBATTErrorSuccess];
     }else{
         [self.peripheralManager respondToRequest:request withResult:CBATTErrorWriteNotPermitted];
     }
-    
-    
 }
 
 //
