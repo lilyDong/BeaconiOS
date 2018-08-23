@@ -1,47 +1,43 @@
 //
-//  ScanViewController.m
-//  Beacon
+//  ScanBeaconTool.m
+//  BeaconiOS
 //
-//  Created by dongliyun on 2018/8/8.
-//  Copyright © 2018年 LY. All rights reserved.
+//  Created by dongliyun on 2018/8/23.
+//  Copyright © 2018年 dongliyun. All rights reserved.
 //
 
-#import "ScanViewController.h"
+#import "ScanBeaconTool.h"
 #import <CoreLocation/CoreLocation.h>
+#import <UIKit/UIKit.h>
 
-@interface ScanViewController () <CLLocationManagerDelegate>
-@property (weak, nonatomic) IBOutlet UITextView *logView;
+@interface ScanBeaconTool()<CLLocationManagerDelegate>
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLBeaconRegion *beaconRegion;
 @property (nonatomic, copy) NSString *defaultUUID;
+
 @end
 
-@implementation ScanViewController
+@implementation ScanBeaconTool
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-
-    [self requestAuthor];
-    [self beaconInit];
-    [self startIfCan];
++ (instancetype) sharedInstance{
+    static dispatch_once_t onceToken;
+    static ScanBeaconTool *beaconTool;
+    dispatch_once(&onceToken, ^{
+        beaconTool = [[ScanBeaconTool alloc] init];
+    });
+    return beaconTool;
 }
-
-- (void) beaconInit{
-    self.defaultUUID = @"FDA50693-A4E2-4FB1-AFCF-C6EB07647825";
-    self.defaultUUID = @"0CB3C111-B726-4A64-A3CB-02F77406701A";
+- (instancetype)init{
+    if (self = [super init]) {
+        self.locationManager.delegate = self;
+        [self beaconInit];
+        [self requestAuthor];
+    }
+    return self;
 }
+#pragma mark - public method
 
--(void)addLog:(NSString *) log {
-    NSLog(@"newlog:%@",log);
-    NSMutableString *text = [NSMutableString stringWithString:self.logView.text];
-    [text appendFormat:@"%@ %@",[NSDate new],log];
-    [text appendFormat:@"\n"];
-    self.logView.text = text;
-    [self.logView scrollRangeToVisible:NSMakeRange(self.logView.text.length, 1)];
-}
-
-- (void) startIfCan{
+- (void)start{
     CLAuthorizationStatus authorizationStatus=[CLLocationManager authorizationStatus];
     switch (authorizationStatus){
         case kCLAuthorizationStatusNotDetermined:{
@@ -54,14 +50,29 @@
             break;
         case kCLAuthorizationStatusAuthorizedAlways:
         case kCLAuthorizationStatusAuthorizedWhenInUse:{
-            [self start];
+            [self startScan];
         }
             break;
     }
-    
 }
 
-- (void)start{
+- (void)stop{
+    [self.locationManager stopRangingBeaconsInRegion:self.beaconRegion];
+    [self.locationManager stopMonitoringForRegion:self.beaconRegion];
+}
+
+#pragma mark - private method
+
+- (void) beaconInit{
+    self.defaultUUID = @"FDA50693-A4E2-4FB1-AFCF-C6EB07647825";
+    self.defaultUUID = @"0CB3C111-B726-4A64-A3CB-02F77406701A";
+}
+
+-(void)addLog:(NSString *) log {
+    NSLog(@"newlog:%@",log);
+}
+
+- (void) startScan{
     // range 模式
     BOOL availableRange = [CLLocationManager isRangingAvailable];
     if (availableRange){
@@ -78,13 +89,7 @@
     }
 }
 
-- (void)stop{
-    [self.locationManager stopRangingBeaconsInRegion:self.beaconRegion];
-    [self.locationManager stopMonitoringForRegion:self.beaconRegion];
-}
-
-- (void)requestAuthor
-{
+- (void)requestAuthor{
     // 设置通知的类型可以为弹窗提示,声音提示,应用图标数字提示
     UIUserNotificationSettings *setting = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
     // 授权通知
@@ -95,26 +100,19 @@
 - (void) sendNotification:(NSString *)alertBody{
     // 1.创建通知
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-    // 2.设置通知的必选参数
-    // 设置通知显示的内容
+    // 2.设置通知的必选参数, 设置通知显示的内容
     localNotification.alertBody = alertBody;
     // 设置通知的发送时间,单位秒
     localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:2];
     //解锁滑动时的事件
     localNotification.alertAction = @"别磨蹭了!";
-    //收到通知时App icon的角标
-    //    localNotification.applicationIconBadgeNumber = 1;
-    //推送是带的声音提醒，设置默认的字段为UILocalNotificationDefaultSoundName
     localNotification.soundName = UILocalNotificationDefaultSoundName;
-    // 3.发送通知(? : 根据项目需要使用)
-    // 方式一: 根据通知的发送时间(fireDate)发送通知
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-
 }
 #pragma mark - CLLocationManagerDelegate AuthorizationStatus
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
-    [self startIfCan];
+    [self startScan];
 }
 
 #pragma mark - CLLocationManagerDelegate Ranging
@@ -123,6 +121,9 @@
 - (void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(CLBeaconRegion *)region{
     NSString *log = [NSString stringWithFormat:@"[didRangeBeacons],beacons:%@",beacons.count >0 ? beacons:@0];
     [self addLog:log];
+    if ([_delegate respondsToSelector:@selector(didRangeBeacons:inRegion:)]) {
+        [_delegate didRangeBeacons:beacons inRegion:region];
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region withError:(NSError *)error{
@@ -153,18 +154,26 @@
         default:
             break;
     }
-    [self sendNotification:stateString];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didDetermineState:forRegion:)]) {
+        [self.delegate didDetermineState:state forRegion:region];
+    }
+//    [self sendNotification:stateString];
     
 }
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region{
     NSLog(@"%s",__func__);
-    [self sendNotification:@"小主人，上班记得打卡哦！"];
+//    [self sendNotification:@"小主人，上班记得打卡哦！"];
+    if ([_delegate respondsToSelector:@selector(didEnterRegion:)]) {
+        [_delegate didEnterRegion:region];
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(nonnull CLRegion *)region{
     NSLog(@"%s",__func__);
-    [self sendNotification:@"下班了，别忘记打卡哦！"];
-    
+//    [self sendNotification:@"下班了，别忘记打卡哦！"];
+    if ([_delegate respondsToSelector:@selector(didExitRegion:)]) {
+        [_delegate didExitRegion:region];
+    }
 }
 #pragma mark - getter and setter
 

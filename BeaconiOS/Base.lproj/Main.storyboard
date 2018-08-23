@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="AaE-CI-ejc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AaE-CI-ejc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -30,6 +29,10 @@
         <scene sceneID="bKA-mR-jtP">
             <objects>
                 <viewController id="u2s-MB-Rca" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1N6-lS-vjI"/>
+                        <viewControllerLayoutGuide type="bottom" id="rZf-m3-TZt"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="FbY-cI-Jgn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -68,7 +71,6 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="yuU-aO-r8S"/>
                     </view>
                     <navigationItem key="navigationItem" id="06R-5y-yhq"/>
                 </viewController>
@@ -80,6 +82,10 @@
         <scene sceneID="Rgm-Sr-8Lu">
             <objects>
                 <viewController title="扫描iBeacon" id="tUF-9M-DQ6" customClass="ScanViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2bM-Zb-wQ9"/>
+                        <viewControllerLayoutGuide type="bottom" id="BzV-sn-kSU"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="W60-EY-bel">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -93,7 +99,6 @@
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="1Zw-cW-N61"/>
                     </view>
                     <connections>
                         <outlet property="logView" destination="YyO-mA-eVb" id="pOf-58-gnz"/>
@@ -107,11 +112,14 @@
         <scene sceneID="eoc-Ca-aoa">
             <objects>
                 <viewController title="模拟iBeacon" id="3ub-Uk-het" customClass="BeaconViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mbh-ZW-sP1"/>
+                        <viewControllerLayoutGuide type="bottom" id="RPD-in-CnY"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ZFi-48-0Az">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="1g8-6v-L5h"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kmf-wR-2Zj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -122,11 +130,14 @@
         <scene sceneID="6z0-3b-aXI">
             <objects>
                 <viewController title="Peripheral" id="0EU-n4-MA7" customClass="PeripheralViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="P7J-oL-Ly3"/>
+                        <viewControllerLayoutGuide type="bottom" id="xa3-xG-PRc"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="XXb-yn-XvS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="Tql-U9-10J"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RDI-gC-ujU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -137,6 +148,10 @@
         <scene sceneID="Vh9-Yh-J54">
             <objects>
                 <viewController title="Central" id="5og-1I-EZW" customClass="CentralViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ed7-ra-ku3"/>
+                        <viewControllerLayoutGuide type="bottom" id="wcW-ZH-lWw"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="KJ1-Jd-Mgz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -182,7 +197,6 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="x3n-BD-eNi"/>
                     </view>
                     <connections>
                         <outlet property="clearBtn" destination="LWb-38-JqQ" id="QQF-Q1-Q8f"/>

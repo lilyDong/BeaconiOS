@@ -15,6 +15,7 @@
 		FE0769E9211C2850004ABC5A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0769E8211C2850004ABC5A /* main.m */; };
 		FE0769F1211C3DF9004ABC5A /* PeripheralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0769EF211C3DF9004ABC5A /* PeripheralViewController.m */; };
 		FE0769F421215C7D004ABC5A /* CentralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE0769F321215C7D004ABC5A /* CentralViewController.m */; };
+		FE127BAD212EC1B6009BC33C /* ScanBeaconTool.m in Sources */ = {isa = PBXBuildFile; fileRef = FE127BAC212EC1B6009BC33C /* ScanBeaconTool.m */; };
 		FE14C9E021242D4B000FFF79 /* BeaconViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14C9DF21242D4B000FFF79 /* BeaconViewController.m */; };
 		FE14C9E3212432C9000FFF79 /* ScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14C9E2212432C9000FFF79 /* ScanViewController.m */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,8 @@
 		FE0769F0211C3DF9004ABC5A /* PeripheralViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeripheralViewController.h; sourceTree = "<group>"; };
 		FE0769F221215C7D004ABC5A /* CentralViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CentralViewController.h; sourceTree = "<group>"; };
 		FE0769F321215C7D004ABC5A /* CentralViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CentralViewController.m; sourceTree = "<group>"; };
+		FE127BAB212EC1B6009BC33C /* ScanBeaconTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScanBeaconTool.h; sourceTree = "<group>"; };
+		FE127BAC212EC1B6009BC33C /* ScanBeaconTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScanBeaconTool.m; sourceTree = "<group>"; };
 		FE14C9DE21242D4B000FFF79 /* BeaconViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeaconViewController.h; sourceTree = "<group>"; };
 		FE14C9DF21242D4B000FFF79 /* BeaconViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BeaconViewController.m; sourceTree = "<group>"; };
 		FE14C9E1212432C9000FFF79 /* ScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanViewController.h; sourceTree = "<group>"; };
@@ -82,6 +85,8 @@
 				FE14C9E2212432C9000FFF79 /* ScanViewController.m */,
 				FE14C9DE21242D4B000FFF79 /* BeaconViewController.h */,
 				FE14C9DF21242D4B000FFF79 /* BeaconViewController.m */,
+				FE127BAB212EC1B6009BC33C /* ScanBeaconTool.h */,
+				FE127BAC212EC1B6009BC33C /* ScanBeaconTool.m */,
 				FE0769DF211C284F004ABC5A /* Main.storyboard */,
 				FE0769E2211C2850004ABC5A /* Assets.xcassets */,
 				FE0769E4211C2850004ABC5A /* LaunchScreen.storyboard */,
@@ -122,6 +127,11 @@
 				TargetAttributes = {
 					FE0769D5211C284F004ABC5A = {
 						CreatedOnToolsVersion = 9.4.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -167,6 +177,7 @@
 				FE0769E9211C2850004ABC5A /* main.m in Sources */,
 				FE14C9E3212432C9000FFF79 /* ScanViewController.m in Sources */,
 				FE0769DB211C284F004ABC5A /* AppDelegate.m in Sources */,
+				FE127BAD212EC1B6009BC33C /* ScanBeaconTool.m in Sources */,
 				FE0769F421215C7D004ABC5A /* CentralViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -244,7 +255,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -296,7 +307,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -314,7 +325,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dly.BeaconiOS;
+				PRODUCT_BUNDLE_IDENTIFIER = dly.BeaconiOS.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -331,7 +342,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = dly.BeaconiOS;
+				PRODUCT_BUNDLE_IDENTIFIER = dly.BeaconiOS.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
